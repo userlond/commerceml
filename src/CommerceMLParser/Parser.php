@@ -15,12 +15,12 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 class Parser extends EventDispatcher {
     protected $xmlReader;
     protected $factory;
-    protected $callable = [];
+    protected $callable = array();
 
     private $bulk_count = 0;
-    private $path = [];
-    private $bulk_rows = [];
-    private $bulk_rows_counter = [];
+    private $path = array();
+    private $bulk_rows = array();
+    private $bulk_rows_counter = array();
 
 
     public function __construct(Factory $factory = null)
@@ -45,13 +45,14 @@ class Parser extends EventDispatcher {
      */
     protected function dispatchObjectCallable()
     {
-        return function ($object, $self) {
+        $class = $this;
+        return function ($object, $self) use($class) {
             if (!class_exists($object[1]['event'])) {
                 throw new NoEventException($object[1]);
             }
             $event = explode('\\', $object[1]['event']);
             $event = end($event);
-            $this->dispatch($event, new $object[1]['event']($object[0], $self));
+            $class->dispatch($event, new $object[1]['event']($object[0], $self));
         };
     }
 
@@ -65,7 +66,7 @@ class Parser extends EventDispatcher {
 
     public function parse($file)
     {
-        $this->path = [];
+        $this->path = array();
 
         $this->xmlReader->open($file);
         $this->read();
@@ -104,7 +105,7 @@ class Parser extends EventDispatcher {
 
                 if (isset($this->callable[$path])) {
                     $object = $this->factory->createObject($path, $this->loadElementXml());
-                    call_user_func_array($this->callable[$path], [$object, $this]);
+                    call_user_func_array($this->callable[$path], array($object, $this));
                 }
             }
         }
@@ -122,7 +123,7 @@ class Parser extends EventDispatcher {
         @$this->bulk_rows_counter[$event]++;
         if (count($this->bulk_rows[$event]) >= $this->bulk_count) {
             $this->dispatch('BulkUpload', new BulkEvent($event, $this));
-            $this->bulk_rows[$event] = [];
+            $this->bulk_rows[$event] = array();
         }
     }
 

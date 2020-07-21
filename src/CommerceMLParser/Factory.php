@@ -18,31 +18,31 @@ class Factory {
     /**
      * @var array
      */
-    protected static $objects = [
-        'КоммерческаяИнформация/Классификатор/Группы/Группа' => [
+    protected static $objects = array(
+        'КоммерческаяИнформация/Классификатор/Группы/Группа' => array(
             'model'         => '\CommerceMLParser\Model\Category',
             'event'         => '\CommerceMLParser\Event\CategoryEvent',
             'collection'    => '\CommerceMLParser\Model\CategoryCollection',
             'child'         => 'Группы/Группа'
-        ],
-        'КоммерческаяИнформация/Классификатор/Свойства/СвойствоНоменклатуры' => [
+        ),
+        'КоммерческаяИнформация/Классификатор/Свойства/СвойствоНоменклатуры' => array(
             'model'         => '\CommerceMLParser\Model\Property',
             'event'         => '\CommerceMLParser\Event\PropertyEvent',
-        ],
-        'КоммерческаяИнформация/Каталог/Товары/Товар' => [
+        ),
+        'КоммерческаяИнформация/Каталог/Товары/Товар' => array(
             'model'         => '\CommerceMLParser\Model\Product',
             'event'         => '\CommerceMLParser\Event\ProductEvent',
-        ],
+        ),
 
-        'КоммерческаяИнформация/ПакетПредложений/ТипыЦен/ТипЦены' => [
+        'КоммерческаяИнформация/ПакетПредложений/ТипыЦен/ТипЦены' => array(
             'model'         => '\CommerceMLParser\Model\PriceType',
             'event'         => '\CommerceMLParser\Event\PriceTypeEvent',
-        ],
-        'КоммерческаяИнформация/ПакетПредложений/Предложения/Предложение' => [
+        ),
+        'КоммерческаяИнформация/ПакетПредложений/Предложения/Предложение' => array(
             'model'         => '\CommerceMLParser\Model\Offer',
             'event'         => '\CommerceMLParser\Event\OfferEvent',
-        ]
-    ];
+        )
+    );
 
     /**
      * @param string $path
@@ -68,7 +68,7 @@ class Factory {
             $this->addChild($object, $collection, $path, $xml);
         }
 
-        return [isset($collection) ? $collection : $object, self::$objects[$path]];
+        return array(isset($collection) ? $collection : $object, self::$objects[$path]);
     }
 
     /**
